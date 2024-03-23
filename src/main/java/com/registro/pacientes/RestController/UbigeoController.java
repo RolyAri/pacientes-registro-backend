@@ -6,10 +6,7 @@ import com.registro.pacientes.DTO.DTOResponse.ProvinciaDTOResponse;
 import com.registro.pacientes.Entities.Ubigeo;
 import com.registro.pacientes.Services.UbigeoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +44,24 @@ public class UbigeoController {
     public List<DistritoDTOResponse> listarDistritos(){
         List<DistritoDTOResponse> distritos = new ArrayList<>();
         List<Ubigeo> ubigeos = ubigeoService.listarDistritos();
+        ubigeos.forEach(ubigeo -> {
+            distritos.add(new DistritoDTOResponse(ubigeo.getCodigo_distrito(), ubigeo.getDescripcion_distrito()));
+        });
+        return distritos;
+    }
+    @GetMapping("/provincia/{codDpto}")
+    public List<ProvinciaDTOResponse> listarPronviciasPorDpto(@PathVariable("codDpto") String codDpto){
+        List<ProvinciaDTOResponse> provincias = new ArrayList<>();
+        List<Ubigeo> ubigeos = ubigeoService.listarProvinciasByDepartamento(codDpto);
+        ubigeos.forEach(ubigeo -> {
+            provincias.add(new ProvinciaDTOResponse(ubigeo.getCodigo_provincia(), ubigeo.getDescripcion_provincia()));
+        });
+        return provincias;
+    }
+    @GetMapping("/distrito/{codProvincia}/{codDpto}")
+    public List<DistritoDTOResponse> listarDistritosPorProvinciaAndDpto(@PathVariable("codProvincia") String codProvincia, @PathVariable("codDpto") String codDpto){
+        List<DistritoDTOResponse> distritos = new ArrayList<>();
+        List<Ubigeo> ubigeos = ubigeoService.listarDistritosByProvinciaAndDepartamento(codProvincia, codDpto);
         ubigeos.forEach(ubigeo -> {
             distritos.add(new DistritoDTOResponse(ubigeo.getCodigo_distrito(), ubigeo.getDescripcion_distrito()));
         });

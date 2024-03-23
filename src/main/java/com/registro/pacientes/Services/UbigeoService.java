@@ -19,4 +19,10 @@ public class UbigeoService {
     public List<Ubigeo> listarDepartamentos() {return ubigeoRepository.findAllDepartamentos();}
     public List<Ubigeo> listarProvincias() {return ubigeoRepository.findAllProvincias();}
     public List<Ubigeo> listarDistritos() {return ubigeoRepository.findAllDistritos();}
+    public List<Ubigeo> listarProvinciasByDepartamento(String codDpto){
+        return ubigeoRepository.findProvinciasByCodigoDepartamento(codDpto);
+    }
+    public List<Ubigeo> listarDistritosByProvinciaAndDepartamento(String codProvincia, String codDpto){
+        return ubigeoRepository.findDistritosByCodigoProvinciaAndCodigoDepartamento(codProvincia, codDpto);
+    }
 }
